@@ -1,0 +1,21 @@
+{
+  "images" : [
+    {
+      "filename" : "Captura de Pantalla 2022-05-12 a la(s) 6.40.46 p.m..png",
+      "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "3x"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

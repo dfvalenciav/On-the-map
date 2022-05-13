@@ -12,8 +12,9 @@
 		14F5DABD282DA9A200514B0A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14F5DABC282DA9A200514B0A /* ViewController.swift */; };
 		14F5DAC0282DA9A200514B0A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 14F5DABE282DA9A200514B0A /* Main.storyboard */; };
 		14F5DAC3282DA9A200514B0A /* on_the_map.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 14F5DAC1282DA9A200514B0A /* on_the_map.xcdatamodeld */; };
-		14F5DAC5282DA9A400514B0A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 14F5DAC4282DA9A400514B0A /* Assets.xcassets */; };
 		14F5DAC8282DA9A400514B0A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 14F5DAC6282DA9A400514B0A /* LaunchScreen.storyboard */; };
+		14F5DAD5282DBFB100514B0A /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 14F5DAD4282DBFB100514B0A /* Colors.xcassets */; };
+		14F5DAD7282DBFDD00514B0A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 14F5DAD6282DBFDD00514B0A /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -23,9 +24,10 @@
 		14F5DABC282DA9A200514B0A /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		14F5DABF282DA9A200514B0A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		14F5DAC2282DA9A200514B0A /* on_the_map.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = on_the_map.xcdatamodel; sourceTree = "<group>"; };
-		14F5DAC4282DA9A400514B0A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		14F5DAC7282DA9A400514B0A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		14F5DAC9282DA9A400514B0A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		14F5DAD4282DBFB100514B0A /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
+		14F5DAD6282DBFDD00514B0A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,16 +60,49 @@
 		14F5DAB7282DA9A200514B0A /* on the map */ = {
 			isa = PBXGroup;
 			children = (
-				14F5DAB8282DA9A200514B0A /* AppDelegate.swift */,
-				14F5DABA282DA9A200514B0A /* SceneDelegate.swift */,
-				14F5DABC282DA9A200514B0A /* ViewController.swift */,
-				14F5DABE282DA9A200514B0A /* Main.storyboard */,
-				14F5DAC4282DA9A400514B0A /* Assets.xcassets */,
-				14F5DAC6282DA9A400514B0A /* LaunchScreen.storyboard */,
 				14F5DAC9282DA9A400514B0A /* Info.plist */,
 				14F5DAC1282DA9A200514B0A /* on_the_map.xcdatamodeld */,
+				14F5DAB8282DA9A200514B0A /* AppDelegate.swift */,
+				14F5DABA282DA9A200514B0A /* SceneDelegate.swift */,
+				14F5DAD2282DBCC200514B0A /* Controller */,
+				14F5DAD1282DBCBA00514B0A /* View */,
+				14F5DACF282DBC9E00514B0A /* Model */,
+				14F5DAD3282DBCCC00514B0A /* Assets */,
 			);
 			path = "on the map";
+			sourceTree = "<group>";
+		};
+		14F5DACF282DBC9E00514B0A /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		14F5DAD1282DBCBA00514B0A /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		14F5DAD2282DBCC200514B0A /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				14F5DABC282DA9A200514B0A /* ViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		14F5DAD3282DBCCC00514B0A /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				14F5DABE282DA9A200514B0A /* Main.storyboard */,
+				14F5DAD4282DBFB100514B0A /* Colors.xcassets */,
+				14F5DAC6282DA9A400514B0A /* LaunchScreen.storyboard */,
+				14F5DAD6282DBFDD00514B0A /* Assets.xcassets */,
+			);
+			path = Assets;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -129,7 +164,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				14F5DAC8282DA9A400514B0A /* LaunchScreen.storyboard in Resources */,
-				14F5DAC5282DA9A400514B0A /* Assets.xcassets in Resources */,
+				14F5DAD5282DBFB100514B0A /* Colors.xcassets in Resources */,
+				14F5DAD7282DBFDD00514B0A /* Assets.xcassets in Resources */,
 				14F5DAC0282DA9A200514B0A /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
