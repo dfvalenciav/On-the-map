@@ -1,34 +1,28 @@
 //
-//  MapViewController.swift
+//  TableViewController.swift
 //  on the map
 //
-//  Created by Daniel Felipe Valencia Rodriguez on 16/05/22.
+//  Created by Daniel Felipe Valencia Rodriguez on 17/05/22.
 //
 
+import Foundation
 import UIKit
-import MapKit
 
-class MapViewController: UIViewController {
-
-
-
-    @IBOutlet var mapView: MKMapView!
-    @IBOutlet weak var logoutButton: UIBarButtonItem!
+class TableViewController : UIViewController {
+    
+    @IBOutlet weak var logoutButonAction: UIBarButtonItem!
     @IBOutlet weak var dropPinButton: UIBarButtonItem!
     @IBOutlet weak var refreshButton: UIBarButtonItem!
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
     }
-
-
+    
     @IBAction func logoutButtonAction(_ sender: Any) {
         udacityClient.logout{ (results, error)  in
             DispatchQueue.main.async {
                 self.dismiss(animated: true, completion: nil)
+                
             }
         }
     }

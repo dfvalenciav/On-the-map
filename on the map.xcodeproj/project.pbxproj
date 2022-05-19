@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		148334C428348A0D0029B981 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148334C328348A0D0029B981 /* TableViewController.swift */; };
+		148334C628348A6C0029B981 /* AddLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148334C528348A6C0029B981 /* AddLocationViewController.swift */; };
+		148334C828348AA60029B981 /* FinishAddLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148334C728348AA60029B981 /* FinishAddLocationViewController.swift */; };
 		14C9FC3F282E8E500076510C /* SessionResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14C9FC3E282E8E500076510C /* SessionResponse.swift */; };
 		14C9FC41282E8F4F0076510C /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14C9FC40282E8F4F0076510C /* Account.swift */; };
 		14C9FC43282E8F5E0076510C /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14C9FC42282E8F5E0076510C /* Session.swift */; };
@@ -26,6 +29,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		148334C328348A0D0029B981 /* TableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
+		148334C528348A6C0029B981 /* AddLocationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddLocationViewController.swift; sourceTree = "<group>"; };
+		148334C728348AA60029B981 /* FinishAddLocationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinishAddLocationViewController.swift; sourceTree = "<group>"; };
 		14C9FC3E282E8E500076510C /* SessionResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionResponse.swift; sourceTree = "<group>"; };
 		14C9FC40282E8F4F0076510C /* Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
 		14C9FC42282E8F5E0076510C /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
@@ -111,6 +117,9 @@
 			children = (
 				14F5DABC282DA9A200514B0A /* ViewController.swift */,
 				14F4772C283324B400892117 /* MapViewController.swift */,
+				148334C328348A0D0029B981 /* TableViewController.swift */,
+				148334C528348A6C0029B981 /* AddLocationViewController.swift */,
+				148334C728348AA60029B981 /* FinishAddLocationViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -235,9 +244,12 @@
 			files = (
 				14F4772E283324B400892117 /* MapViewController.swift in Sources */,
 				14C9FC45282EA2770076510C /* LoginRequest.swift in Sources */,
+				148334C428348A0D0029B981 /* TableViewController.swift in Sources */,
+				148334C628348A6C0029B981 /* AddLocationViewController.swift in Sources */,
 				14F5DABD282DA9A200514B0A /* ViewController.swift in Sources */,
 				14F477312833415300892117 /* ErrorResponse.swift in Sources */,
 				14F5DAC3282DA9A200514B0A /* on_the_map.xcdatamodeld in Sources */,
+				148334C828348AA60029B981 /* FinishAddLocationViewController.swift in Sources */,
 				14F5DAB9282DA9A200514B0A /* AppDelegate.swift in Sources */,
 				14F5DADD282DF20400514B0A /* udacityClient.swift in Sources */,
 				14C9FC43282E8F5E0076510C /* Session.swift in Sources */,
@@ -391,6 +403,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 62XA2K2V6K;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "on the map/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -418,6 +431,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 62XA2K2V6K;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "on the map/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

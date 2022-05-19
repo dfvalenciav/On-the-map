@@ -30,6 +30,7 @@ class LoginViewController: UIViewController {
         
         EmailTextField.text = ""
         PasswordTextField.text = ""
+        activityIndicator.isHidden = true
     }
     
     
@@ -43,6 +44,7 @@ class LoginViewController: UIViewController {
                             
     func handleLoginResponse (success: Bool, error: Error?) -> Void  {
             if success {
+                //performSegue(withIdentifier: "loginNavigation", sender: nil)
                 performSegue(withIdentifier: "loginNavigation", sender: nil)
             }
             else {
@@ -55,8 +57,10 @@ class LoginViewController: UIViewController {
     
     func setLoggingIn(_ loggingIn: Bool) {
         if loggingIn {
+            activityIndicator.isHidden = loggingIn
             activityIndicator.startAnimating()
         } else {
+            activityIndicator.isHidden = loggingIn
             activityIndicator.stopAnimating()
         }
         EmailTextField.isEnabled = !loggingIn

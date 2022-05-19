@@ -26,7 +26,7 @@ enum EndPoints {
         switch self {
         case .sessionId: return EndPoints.base + "/session"
         case.login: return EndPoints.base
-        case.logout: return EndPoints.base
+        case.logout: return EndPoints.base + "/session"
         }
     }
         
@@ -35,8 +35,6 @@ enum EndPoints {
         }
     
 }
-    
-    
     class func taskForGetRequest<ResponseType: Decodable>(url: URL, responseType:  ResponseType.Type, completion: @escaping (ResponseType?, Error?) -> Void) {
         let task = URLSession.shared.dataTask(with: url) { data, response, error in
                    guard let data = data else {
@@ -128,5 +126,31 @@ enum EndPoints {
             }
         }
     }
-
+    
+    class func logout(completion: @escaping (Bool, Error?) -> Void) {
+        var request = URLRequest(url: EndPoints.logout.url)
+        request.httpMethod = "DELETE"
+        var xsrfCookie: HTTPCookie? = nil
+        let sharedCookieStorage = HTTPCookieStorage.shared
+        for cookie in sharedCookieStorage.cookies! {
+            if cookie.name == "XSRF-TOKEN" { xsrfCookie = cookie }
+        }
+        if let xsrfCookie = xsrfCookie {
+            request.setValue(xsrfCookie.value, forHTTPHeaderField: "X-XSRF-TOKEN")
+        }
+        let session = URLSession.shared
+        let task = session.dataTask(with: request) { data, response, error in
+            if error != nil {
+            completion (false, error)
+            return
+    }
+        let range = 5..<data!.count
+            let newData = data?.subdata(in: range)
+            print (String(data: newData!, encoding: .utf8)!)
+            Auth.sessionId = ""
+            completion(false, error)
+        }
+        
+        task.resume()
+    }
 }
