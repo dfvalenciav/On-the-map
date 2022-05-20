@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1463650328372A81003F81AF /* StudentLocations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1463650228372A81003F81AF /* StudentLocations.swift */; };
+		1463650528372ACF003F81AF /* PostLocationResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1463650428372ACF003F81AF /* PostLocationResponse.swift */; };
+		1463650728372BFB003F81AF /* StudentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1463650628372BFB003F81AF /* StudentModel.swift */; };
+		1463650928372C21003F81AF /* UodateStudenLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1463650828372C21003F81AF /* UodateStudenLocation.swift */; };
+		1463650B28372C56003F81AF /* StudentInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1463650A28372C56003F81AF /* StudentInformation.swift */; };
+		1463650D28372D88003F81AF /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1463650C28372D88003F81AF /* UserProfile.swift */; };
+		1463650F28372DCA003F81AF /* StudentResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1463650E28372DCA003F81AF /* StudentResponse.swift */; };
 		148334C428348A0D0029B981 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148334C328348A0D0029B981 /* TableViewController.swift */; };
 		148334C628348A6C0029B981 /* AddLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148334C528348A6C0029B981 /* AddLocationViewController.swift */; };
 		148334C828348AA60029B981 /* FinishAddLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148334C728348AA60029B981 /* FinishAddLocationViewController.swift */; };
@@ -15,6 +22,7 @@
 		14C9FC43282E8F5E0076510C /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14C9FC42282E8F5E0076510C /* Session.swift */; };
 		14C9FC45282EA2770076510C /* LoginRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14C9FC44282EA2770076510C /* LoginRequest.swift */; };
 		14C9FC47282EA2F80076510C /* Udacity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14C9FC46282EA2F80076510C /* Udacity.swift */; };
+		14CCF3B428368F22002C7E1E /* location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14CCF3B328368F22002C7E1E /* location.swift */; };
 		14F4772E283324B400892117 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14F4772C283324B400892117 /* MapViewController.swift */; };
 		14F477312833415300892117 /* ErrorResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14F477302833415300892117 /* ErrorResponse.swift */; };
 		14F5DAB9282DA9A200514B0A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14F5DAB8282DA9A200514B0A /* AppDelegate.swift */; };
@@ -29,6 +37,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1463650228372A81003F81AF /* StudentLocations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentLocations.swift; sourceTree = "<group>"; };
+		1463650428372ACF003F81AF /* PostLocationResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostLocationResponse.swift; sourceTree = "<group>"; };
+		1463650628372BFB003F81AF /* StudentModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentModel.swift; sourceTree = "<group>"; };
+		1463650828372C21003F81AF /* UodateStudenLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UodateStudenLocation.swift; sourceTree = "<group>"; };
+		1463650A28372C56003F81AF /* StudentInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentInformation.swift; sourceTree = "<group>"; };
+		1463650C28372D88003F81AF /* UserProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfile.swift; sourceTree = "<group>"; };
+		1463650E28372DCA003F81AF /* StudentResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentResponse.swift; sourceTree = "<group>"; };
 		148334C328348A0D0029B981 /* TableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
 		148334C528348A6C0029B981 /* AddLocationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddLocationViewController.swift; sourceTree = "<group>"; };
 		148334C728348AA60029B981 /* FinishAddLocationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinishAddLocationViewController.swift; sourceTree = "<group>"; };
@@ -37,6 +52,7 @@
 		14C9FC42282E8F5E0076510C /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
 		14C9FC44282EA2770076510C /* LoginRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginRequest.swift; sourceTree = "<group>"; };
 		14C9FC46282EA2F80076510C /* Udacity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Udacity.swift; sourceTree = "<group>"; };
+		14CCF3B328368F22002C7E1E /* location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = location.swift; sourceTree = "<group>"; };
 		14F4772C283324B400892117 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MapViewController.swift; path = "on the map/Controller/MapViewController.swift"; sourceTree = SOURCE_ROOT; };
 		14F477302833415300892117 /* ErrorResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorResponse.swift; sourceTree = "<group>"; };
 		14F5DAB5282DA9A200514B0A /* on the map.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "on the map.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -147,10 +163,18 @@
 		14F5DAD9282DE59700514B0A /* Map Responses */ = {
 			isa = PBXGroup;
 			children = (
+				1463650428372ACF003F81AF /* PostLocationResponse.swift */,
 				14C9FC40282E8F4F0076510C /* Account.swift */,
 				14C9FC42282E8F5E0076510C /* Session.swift */,
 				14C9FC3E282E8E500076510C /* SessionResponse.swift */,
 				14F477302833415300892117 /* ErrorResponse.swift */,
+				14CCF3B328368F22002C7E1E /* location.swift */,
+				1463650228372A81003F81AF /* StudentLocations.swift */,
+				1463650628372BFB003F81AF /* StudentModel.swift */,
+				1463650828372C21003F81AF /* UodateStudenLocation.swift */,
+				1463650A28372C56003F81AF /* StudentInformation.swift */,
+				1463650C28372D88003F81AF /* UserProfile.swift */,
+				1463650E28372DCA003F81AF /* StudentResponse.swift */,
 			);
 			path = "Map Responses";
 			sourceTree = "<group>";
@@ -242,9 +266,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1463650B28372C56003F81AF /* StudentInformation.swift in Sources */,
 				14F4772E283324B400892117 /* MapViewController.swift in Sources */,
 				14C9FC45282EA2770076510C /* LoginRequest.swift in Sources */,
+				14CCF3B428368F22002C7E1E /* location.swift in Sources */,
 				148334C428348A0D0029B981 /* TableViewController.swift in Sources */,
+				1463650528372ACF003F81AF /* PostLocationResponse.swift in Sources */,
+				1463650728372BFB003F81AF /* StudentModel.swift in Sources */,
 				148334C628348A6C0029B981 /* AddLocationViewController.swift in Sources */,
 				14F5DABD282DA9A200514B0A /* ViewController.swift in Sources */,
 				14F477312833415300892117 /* ErrorResponse.swift in Sources */,
@@ -254,9 +282,13 @@
 				14F5DADD282DF20400514B0A /* udacityClient.swift in Sources */,
 				14C9FC43282E8F5E0076510C /* Session.swift in Sources */,
 				14F5DABB282DA9A200514B0A /* SceneDelegate.swift in Sources */,
+				1463650D28372D88003F81AF /* UserProfile.swift in Sources */,
 				14C9FC3F282E8E500076510C /* SessionResponse.swift in Sources */,
 				14C9FC41282E8F4F0076510C /* Account.swift in Sources */,
 				14C9FC47282EA2F80076510C /* Udacity.swift in Sources */,
+				1463650F28372DCA003F81AF /* StudentResponse.swift in Sources */,
+				1463650328372A81003F81AF /* StudentLocations.swift in Sources */,
+				1463650928372C21003F81AF /* UodateStudenLocation.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
