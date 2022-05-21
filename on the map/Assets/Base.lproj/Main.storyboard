@@ -183,35 +183,12 @@
                                 <rect key="frame" x="8" y="64" width="412" height="771"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="wcQ-se-ePL">
-                                        <rect key="frame" x="0.0" y="44.666666030883789" width="412" height="35.333332061767578"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="StudentTableViewCell" id="wcQ-se-ePL" customClass="TableViewCell" customModule="on_the_map" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="44.666666030883789" width="412" height="43.666667938232422"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="wcQ-se-ePL" id="ROs-aV-q6T">
-                                            <rect key="frame" x="0.0" y="0.0" width="412" height="35.333332061767578"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="412" height="43.666667938232422"/>
                                             <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_pin" translatesAutoresizingMaskIntoConstraints="NO" id="2DP-fE-Qff">
-                                                    <rect key="frame" x="2" y="1.9999999999999982" width="20" height="31.333333333333329"/>
-                                                    <color key="tintColor" systemColor="systemPinkColor"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="31" id="S4O-YG-zod"/>
-                                                        <constraint firstAttribute="width" constant="20" id="mes-Mr-O9n"/>
-                                                    </constraints>
-                                                </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kMY-EW-aYn">
-                                                    <rect key="frame" x="27.000000000000004" y="2" width="46.333333333333343" height="30"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="25"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="kMY-EW-aYn" firstAttribute="leading" secondItem="2DP-fE-Qff" secondAttribute="trailing" constant="5" id="LNQ-sJ-AIG"/>
-                                                <constraint firstItem="2DP-fE-Qff" firstAttribute="leading" secondItem="ROs-aV-q6T" secondAttribute="leading" constant="2" id="MEb-Ig-6mt"/>
-                                                <constraint firstItem="kMY-EW-aYn" firstAttribute="top" secondItem="ROs-aV-q6T" secondAttribute="top" constant="2" id="NML-CG-ZoA"/>
-                                                <constraint firstAttribute="bottom" secondItem="2DP-fE-Qff" secondAttribute="bottom" constant="2" id="lIb-Lo-7vB"/>
-                                                <constraint firstItem="2DP-fE-Qff" firstAttribute="top" secondItem="ROs-aV-q6T" secondAttribute="top" constant="2" id="qHc-4M-NKY"/>
-                                            </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                 </prototypes>
@@ -233,15 +210,24 @@
                             </connections>
                         </barButtonItem>
                         <rightBarButtonItems>
-                            <barButtonItem image="icon_refresh" id="0xF-8v-MS3"/>
-                            <barButtonItem image="icon_pin" id="5C0-a4-rqS"/>
+                            <barButtonItem image="icon_refresh" id="0xF-8v-MS3">
+                                <connections>
+                                    <action selector="refreshAction:" destination="B50-bU-Znr" id="ApJ-1N-FJl"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem image="icon_pin" id="5C0-a4-rqS">
+                                <connections>
+                                    <action selector="addLocationAction:" destination="B50-bU-Znr" id="4Oj-qD-Apg"/>
+                                </connections>
+                            </barButtonItem>
                         </rightBarButtonItems>
                     </navigationItem>
                     <connections>
                         <outlet property="dropPinButton" destination="5C0-a4-rqS" id="dOZ-m9-12i"/>
                         <outlet property="logoutButonAction" destination="TIA-Vz-BT6" id="sb2-ii-rGW"/>
                         <outlet property="refreshButton" destination="0xF-8v-MS3" id="bDp-xr-jZz"/>
-                        <segue destination="JL7-rV-rNK" kind="show" id="Faq-y0-A8P"/>
+                        <outlet property="studentsTableView" destination="dml-fx-TMc" id="dt4-U1-UA8"/>
+                        <segue destination="JL7-rV-rNK" kind="show" identifier="addLocation1" id="Faq-y0-A8P"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CRi-ps-Nkm" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -272,7 +258,7 @@
                         <outlet property="logoutButton" destination="wEw-2Q-zXX" id="xDc-eP-xh7"/>
                         <outlet property="mapView" destination="rWd-jm-TK7" id="lPS-5Q-mFL"/>
                         <outlet property="refreshButton" destination="Wl9-XX-uuc" id="Q9l-bN-wWA"/>
-                        <segue destination="JL7-rV-rNK" kind="show" id="Jfh-Wq-02l"/>
+                        <segue destination="JL7-rV-rNK" kind="show" identifier="addLocation" id="Jfh-Wq-02l"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ev8-6A-qZW" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -491,9 +477,6 @@
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
-        <systemColor name="systemPinkColor">
-            <color red="1" green="0.17647058823529413" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 class udacityClient {
 
@@ -201,4 +202,39 @@ enum EndPoints {
     }
     task.resume()
     }
+    
+    class func getStudentLists ( completion: @escaping ([StudentInformation], Error?) -> Void ) {
+
+        let session = URLSession.shared
+        let url = udacityClient.EndPoints.gettingStudentLocations.url
+        let task = session.dataTask(with: url) { data, response, error in
+            
+            guard let data = data else {
+                DispatchQueue.main.async {
+                    
+                    completion ([], error)
+                }
+                return
+            }
+            
+            let decoder = JSONDecoder()
+            
+            do {
+                print (String(data: data, encoding: .utf8) ?? "")
+            let requestObject = try
+                decoder.decode(StudentLocations.self, from: data)
+            DispatchQueue.main.async {
+                //self.tableView.reloadData()
+                completion(requestObject.results, nil)
+            }
+        } catch {
+            
+            DispatchQueue.main.async {
+                completion([], error)
+                print (error.localizedDescription)
+            }
+        }
+    }
+    task.resume()
+            }
 }

@@ -31,6 +31,11 @@ class LoginViewController: UIViewController {
         EmailTextField.text = ""
         PasswordTextField.text = ""
         activityIndicator.isHidden = true
+        
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        setLoggingIn(false)
     }
     
     
@@ -65,7 +70,7 @@ class LoginViewController: UIViewController {
         }
         EmailTextField.isEnabled = !loggingIn
         PasswordTextField.isEnabled = !loggingIn
-        LoginButton.isEnabled = !loggingIn
+       // LoginButton.isEnabled = !loggingIn
         loginWithFacebook.isEnabled = !loggingIn
     }
     
