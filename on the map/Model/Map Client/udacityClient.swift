@@ -9,9 +9,14 @@ import Foundation
 
 class udacityClient {
 
-struct Auth {
-    static var sessionId = ""
-}
+    struct Auth {
+        static var sessionId: String?
+        static var key = ""
+        static var firstName = ""
+        static var lastName = ""
+        static var objectId = ""
+        static var uniqueKey = ""
+    }
 
 
 enum EndPoints {
@@ -21,12 +26,20 @@ enum EndPoints {
     case sessionId
     case login
     case logout
+    case addStudentLocation
+    case gettingStudentLocations
+    case updateStudentLocation
+    case getLoggedInUserProfile
     
     var stringValue : String {
         switch self {
         case .sessionId: return EndPoints.base + "/session"
         case.login: return EndPoints.base
         case.logout: return EndPoints.base + "/session"
+        case.addStudentLocation: return EndPoints.base + "/StudentLocation"
+        case.gettingStudentLocations: return EndPoints.base + "/StudentLocation"
+        case .updateStudentLocation: return EndPoints.base + "/StudentLocation/8ZExGR5uX8"
+        case.getLoggedInUserProfile: return EndPoints.base + "/users/" + Auth.key
         }
     }
         
@@ -152,5 +165,40 @@ enum EndPoints {
         }
         
         task.resume()
+    }
+    
+   class func getStudentPins (completion: @escaping ([StudentInformation], Error?) -> Void ) {
+        
+        let session = URLSession.shared
+        let url = udacityClient.EndPoints.gettingStudentLocations.url
+        
+        let task = session.dataTask(with: url) { data, response, error in
+            
+            guard let data = data else {
+                DispatchQueue.main.async {
+                    completion ([], error)
+                }
+                return
+            }
+            
+            let decoder = JSONDecoder()
+            
+            do {
+                print (String(data: data, encoding: .utf8) ?? "")
+            
+            let requestObject = try
+                decoder.decode(StudentLocations.self, from: data)
+            DispatchQueue.main.async {
+                completion(requestObject.results, nil)
+            }
+        } catch {
+            
+            DispatchQueue.main.async {
+                completion([], error)
+                print (error.localizedDescription)
+            }
+        }
+    }
+    task.resume()
     }
 }

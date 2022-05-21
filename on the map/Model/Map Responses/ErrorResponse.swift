@@ -16,4 +16,10 @@ struct ErrorResponse: Codable {
         case statusMessage = "error"
         
     }
+    
+}
+extension ErrorResponse : LocalizedError {
+    var errorDescription: String? {
+        return statusMessage
+    }
 }
