@@ -55,6 +55,10 @@ class MapViewController: UIViewController {
         }
     }
     
+    @IBAction func addLocation(_ sender: Any) {
+    performSegue(withIdentifier: "addLocation", sender: sender)
+          }
+    
     
     func setup () {
        var annotations = [MKPointAnnotation]()

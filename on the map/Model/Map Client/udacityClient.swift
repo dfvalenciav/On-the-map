@@ -237,4 +237,37 @@ enum EndPoints {
     }
     task.resume()
             }
+    
+    class func addStudentLocation(information: StudentInformation, completion: @escaping (Bool, Error?) -> Void) {
+        var request = URLRequest(url: EndPoints.addStudentLocation.url)
+        request.httpMethod = "POST"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpBody = "{\"uniqueKey\": \"1234\", \"firstName\": \"John\", \"lastName\": \"Doe\",\"mapString\": \"Mountain View, CA\", \"mediaURL\": \"https://udacity.com\",\"latitude\": 37.386052, \"longitude\": -122.083851}".data(using: .utf8)
+        let session = URLSession.shared
+        let task = session.dataTask(with: request) {data, response, error in
+            if error != nil {
+                completion (false, error)
+                return
+            }
+            print (String(data: data!, encoding: .utf8)!)
+            completion(true, nil)
+        }
+        task.resume()
+}
+    
+    class func updateStudentLocation(information: StudentInformation, completion: @escaping (Bool, Error?) -> Void) {
+        var request = URLRequest(url: EndPoints.updateStudentLocation.url)
+        request.httpMethod = "PUT"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpBody = "{\"uniqueKey\": \"1234\", \"firstName\": \"John\", \"lastName\": \"Doe\",\"mapString\": \"Cupertino, CA\", \"mediaURL\": \"https://udacity.com\",\"latitude\": 37.322998, \"longitude\": -122.032182}".data(using: .utf8)
+        let session = URLSession.shared
+        let task = session.dataTask(with: request) { data, response, error in
+            if error != nil {
+                completion (false, error)
+                return
+            }
+            print (String(data: data!, encoding: .utf8)!)
+    }
+        task.resume()
+}
 }

@@ -68,16 +68,18 @@ class LoginViewController: UIViewController {
             activityIndicator.isHidden = loggingIn
             activityIndicator.stopAnimating()
         }
-        EmailTextField.isEnabled = !loggingIn
-        PasswordTextField.isEnabled = !loggingIn
+        //EmailTextField.isEnabled = !loggingIn
+        //PasswordTextField.isEnabled = !loggingIn
        // LoginButton.isEnabled = !loggingIn
         loginWithFacebook.isEnabled = !loggingIn
     }
     
     func showLoginFailure(message: String) {
-        let alertVC = UIAlertController(title: "Login Failed", message: message, preferredStyle: .alert)
-        alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
-        show(alertVC, sender: nil)
+        let alert = UIAlertController(title: "Authentication Error", message: "Email or Password invalid", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .default, handler: { _ in
+        NSLog("The \"OK\" alert occured.")
+        }))
+        self.present(alert, animated: true, completion: nil)
     }
 
 
