@@ -38,7 +38,7 @@ enum EndPoints {
         case.login: return EndPoints.base
         case.logout: return EndPoints.base + "/session"
         case.addStudentLocation: return EndPoints.base + "/StudentLocation"
-        case.gettingStudentLocations: return EndPoints.base + "/StudentLocation"
+        case.gettingStudentLocations: return EndPoints.base + "/StudentLocation?order=-updatedAt&limit=100"
         case .updateStudentLocation: return EndPoints.base + "/StudentLocation/8ZExGR5uX8"
         case.getLoggedInUserProfile: return EndPoints.base + "/users/" + Auth.key
         }
@@ -240,9 +240,12 @@ enum EndPoints {
     
     class func addStudentLocation(information: StudentInformation, completion: @escaping (Bool, Error?) -> Void) {
         var request = URLRequest(url: EndPoints.addStudentLocation.url)
+        let jsonbody = "{\"uniqueKey\": \"\(information.uniqueKey)\", \"firstName\": \"\(information.firstName)\", \"lastName\": \"\(information.lastName)\",\"mapString\": \"\(information.mapString)\", \"mediaURL\": \"\(information.mediaURL)\",\"latitude\": \(information.latitude), \"longitude\": \(information.longitude)}"
+        //print("\(information.latitude), \"longitude\":\(information.longitude)" )
+        
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.httpBody = "{\"uniqueKey\": \"1234\", \"firstName\": \"John\", \"lastName\": \"Doe\",\"mapString\": \"Mountain View, CA\", \"mediaURL\": \"https://udacity.com\",\"latitude\": 37.386052, \"longitude\": -122.083851}".data(using: .utf8)
+        request.httpBody = jsonbody.data(using: .utf8)
         let session = URLSession.shared
         let task = session.dataTask(with: request) {data, response, error in
             if error != nil {
@@ -257,9 +260,11 @@ enum EndPoints {
     
     class func updateStudentLocation(information: StudentInformation, completion: @escaping (Bool, Error?) -> Void) {
         var request = URLRequest(url: EndPoints.updateStudentLocation.url)
+        let jsonbody = "{\"uniqueKey\": \"\(information.uniqueKey)\", \"firstName\": \"\(information.firstName)\", \"lastName\": \"\(information.lastName)\",\"mapString\": \"\(information.mapString)\", \"mediaURL\": \"\(information.mediaURL)\",\"latitude\": \(information.latitude), \"longitude\": \(information.longitude)}"
+        
         request.httpMethod = "PUT"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.httpBody = "{\"uniqueKey\": \"1234\", \"firstName\": \"John\", \"lastName\": \"Doe\",\"mapString\": \"Cupertino, CA\", \"mediaURL\": \"https://udacity.com\",\"latitude\": 37.322998, \"longitude\": -122.032182}".data(using: .utf8)
+        request.httpBody = jsonbody.data(using: .utf8)
         let session = URLSession.shared
         let task = session.dataTask(with: request) { data, response, error in
             if error != nil {
