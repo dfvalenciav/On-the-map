@@ -14,187 +14,147 @@ class AddLocationViewController : UIViewController, UITextFieldDelegate {
    
     
     
-    
-    @IBOutlet weak var CancelButtonOutlet: UIBarButtonItem!
-    @IBOutlet weak var LocationTextFieldOutlet: UITextField!
-    @IBOutlet weak var FindLocationOutlet: UIButton!
+    @IBOutlet weak var locationTextField: UITextField!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet weak var stackViewCentral: UIStackView!
+    @IBOutlet weak var imageAddLocation: UIImageView!
+    @IBOutlet weak var findLocationButton: UIButton!
     
-    var objectId: String?
-    var locationTextFieldIsEmpty = true
-    var linkTextFieldIsEmpty = true
+    // MARK: - Properties
     
+    private var presentingController: UIViewController?
+    var geocoder = CLGeocoder()
+    var latitude: Float = 0.0
+    var longitude: Float = 0.0
+    var keyboardIsVisible = false
     
-    //life cyucle
-    
+    // MARK: - Lifecycle methods
+        
     override func viewDidLoad() {
-        super.viewDidLoad()
-        LocationTextFieldOutlet.delegate = self
-        //linkTextField.delegate = self
-        buttonEnabled(true, button: FindLocationOutlet)
-        activityIndicator.isHidden = true
+        locationTextField.delegate = self
     }
     
-    @IBAction func cancel(_ sender: UIBarButtonItem) {
-        self.dismiss(animated: true, completion: nil)
-    }
-    
-    
-    func backAction() -> Void {
-        self.navigationController?.popViewController(animated: true)
-    }
-    
-   
-    @IBAction func findLocation(_ sender: Any) {
-    self.setLoading(true)
-        let newLocation = LocationTextFieldOutlet.text
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        presentingController = presentingViewController
         
-       /* guard let url = URL(string: self.linkTextField.text!)
-        ,UIApplication.shared.canOpenURL(url) else {
-            self.showAlert(message: "Website link is incorrect:", title: "Invalid link")
-            self.setLoading(false)
-            return
-        }*/
-        worldPosition(newLocation: newLocation ?? "")
-}
+        subscribeToKeyboardNotifications()
+    }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        unsubscribeFromKeyboardNotifications()
+    }
     
-    // Position//
-    
-    private func worldPosition (newLocation: String) {
-        CLGeocoder().geocodeAddressString(newLocation) { (newMarker, error) in
-            if let error = error {
-                
-                self.showAlert(message: error.localizedDescription, title: "Location Not Found")
-                self.setLoading(false)
-                
-            } else {
-                var location: CLLocation?
-            
-            if let marker = newMarker, marker.count > 0 {
-                location = marker.first?.location
-                }
-                
-        if let location = location {
-            self.loadNewLocation(location.coordinate)
-            
+    // MARK: - Actions
+       
+    @IBAction func findLocationButtonAction(_ sender: Any) {
+        view.endEditing(true)
+        if locationTextField.text!.isEmpty  {
+            showFailure(title: "Information Missing", message: "Please fill the location and the link or information associated.")
         } else {
-            self.showAlert(message: "Please try again", title: "Location Invalid")
-            self.setLoading(false)
-            print ("An error occured")
-                }
+            setIndicator(true)
+            geocoder.geocodeAddressString(locationTextField.text ?? "") { (placemarks, error) in
+                self.processResponse(withPlacemarks: placemarks, error: error)
             }
         }
     }
     
-    private func loadNewLocation(_ coordinate: CLLocationCoordinate2D) {
-                let controller = storyboard?.instantiateViewController(withIdentifier: "FinishAddLocationViewController") as! FinishAddLocationViewController
-                controller.studentInformation = buildStudentInformation(coordinate)
-                self.navigationController?.pushViewController(controller, animated: true)
-                
+    @IBAction func cancelButtonAction(_ sender: Any) {
+        self.navigationController?.dismiss(animated: true, completion: nil)
+    }
+    
+    // MARK: - Functions related to keyboard presentation
+    
+    // Function called when keyboard must be shown and the screen must be moved up
+    @objc func keyboardWillShow(_ notification:Notification) {
+        if !keyboardIsVisible {
+            if locationTextField.isEditing {
+                view.frame.origin.y -= getKeyboardHeight(notification) - 50  - findLocationButton.frame.height
             }
-
-    private func buildStudentInformation(_ coordinate: CLLocationCoordinate2D) -> StudentInformation {
-        
-        var studentInfo = [
-            "uniqueKey": udacityClient.Auth.key,
-            "firstName": udacityClient.Auth.firstName,
-            "lastName": udacityClient.Auth.lastName,
-            "mapString": LocationTextFieldOutlet.text!,
-            "mediaURL" : "",
-            "latitude": coordinate.latitude,
-            "longitude": coordinate.longitude,
-        ] as [String: AnyObject]
-
-        if let objectId = objectId {
-            studentInfo["objectId"] = objectId as AnyObject
-            print(objectId)
+            keyboardIsVisible = true
         }
-        return StudentInformation(studentInfo)
+    }
     
-}
-
-    func setLoading(_ loading: Bool) {
-        if loading {
-            DispatchQueue.main.async {
-                self.activityIndicator.isHidden = false
-                self.buttonEnabled(false, button: self.FindLocationOutlet) }
-                } else {
-                    DispatchQueue.main.async {
-                        self.activityIndicator.isHidden = true
-                        self.buttonEnabled(true, button: self.FindLocationOutlet)
-                    }
-                }
-                DispatchQueue.main.async {
-                    self.LocationTextFieldOutlet.isEnabled = !loading
-                    //self.linkTextField.isEnabled = !loading
-                   // self.FindLocationOutlet.isEnabled = !loading
-                }
-                
-            }
-        
-        // TextFields
-        
-        
-        func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-            if textField == LocationTextFieldOutlet {
-                let currentText = LocationTextFieldOutlet.text ?? ""
-                guard let rangeString = Range (range, in: currentText)
-                    else {
-                        return false
-                }
-                
-                let updatedText = currentText.replacingCharacters(in: rangeString, with: string)
-                if updatedText.isEmpty && updatedText == "" {
-                    locationTextFieldIsEmpty = true
-                } else {
-                    locationTextFieldIsEmpty = false
-                    
-                }
-            }
-    
-            
-          /*  if textField == linkTextField {
-                let currentText = linkTextField.text ?? ""
-                guard let rangeString = Range(range, in: currentText)
-                    else {
-                        return false
-                }
-                let updatedText = currentText.replacingCharacters(in: rangeString, with: string)
-                if updatedText.isEmpty && updatedText == "" {
-                    linkTextFieldIsEmpty = true
-                } else {
-                    linkTextFieldIsEmpty = false
-                }
-            }*/
-            
-            if locationTextFieldIsEmpty == false && linkTextFieldIsEmpty == false {
-                buttonEnabled(true, button: FindLocationOutlet)
-            } else {
-                buttonEnabled(true, button: FindLocationOutlet)
-            }
-            return true
-}
-    
-    func textFieldShouldClear(_ textField: UITextField) -> Bool {
-        buttonEnabled (false, button: FindLocationOutlet)
-        if textField == LocationTextFieldOutlet {
-            locationTextFieldIsEmpty = true
+    // Function called when screen must be moved down
+    @objc func keyboardWillHide(_ notification:Notification) {
+        if keyboardIsVisible {
+            view.frame.origin.y = 0
+            keyboardIsVisible = false
         }
-        /*if textField == linkTextField {
-            linkTextFieldIsEmpty = true
-        }*/
+    }
+    
+    // Get keyboard size for move the screen
+    func getKeyboardHeight(_ notification:Notification) -> CGFloat {
+        let userInfo = notification.userInfo
+        let keyboardSize = userInfo![UIResponder.keyboardFrameEndUserInfoKey] as! NSValue // of CGRect
+        return keyboardSize.cgRectValue.height
+    }
+    
+    // MARK: - Subscribe and unsubscribe from keyboard notifications
+    
+    func subscribeToKeyboardNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+
+    func unsubscribeFromKeyboardNotifications() {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    // MARK: - Text field delegate functions
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        view.endEditing(true)
         return true
     }
     
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        if let nextField = textField.superview?.viewWithTag(textField.tag + 1) as?
-            UITextField {
-            nextField.becomeFirstResponder()
+    // MARK: - Main methods
+    
+    func processResponse(withPlacemarks placemarks: [CLPlacemark]?, error: Error?) {
+        if error != nil {
+            setIndicator(false)
+            showFailure(title: "Location Do Not Exist", message: "The informed location doesn't exist.")
         } else {
-            textField.resignFirstResponder()
-            findLocation(FindLocationOutlet as Any)
+            if let placemarks = placemarks, placemarks.count > 0 {
+                let location = (placemarks.first?.location)! as CLLocation
+
+                let coordinate = location.coordinate
+                
+                self.latitude = Float(coordinate.latitude)
+                self.longitude = Float(coordinate.longitude)
+                                
+                setIndicator(false)
+                            
+                goToConfirmingScreen()
+            } else {
+                setIndicator(false)
+                showFailure(title: "Location Not Well Specified", message: "Try to use the full location name (Ex: California, USA).")
+            }
         }
-    return true
+    }
+    
+    func goToConfirmingScreen() {
+        let FinishAddLocationViewController = self.storyboard!.instantiateViewController(withIdentifier: "FinishAddLocationViewController") as! FinishAddLocationViewController
+        FinishAddLocationViewController.latitude = self.latitude
+        FinishAddLocationViewController.longitude = self.longitude
+        FinishAddLocationViewController.mapString = self.locationTextField.text!
+        FinishAddLocationViewController.mediaURL = ""
+        FinishAddLocationViewController.navigationItem.title = "Add Location"
+        self.navigationController?.pushViewController(FinishAddLocationViewController, animated: true)
+    }
+    
+    func setIndicator(_ isFinding: Bool) {
+        if isFinding {
+            activityIndicator.startAnimating()
+        } else {
+            activityIndicator.stopAnimating()
         }
+    }
+                
+    func showFailure(title: String, message: String) {
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        present(alertController, animated: true, completion: nil)
+    }
 }

@@ -23,6 +23,7 @@ class LoginViewController: UIViewController {
         gradientLayer.frame = view.bounds
         gradientLayer.colors = [UIColor.init(named: "GradientTop")?.cgColor, UIColor.init(named: "GradientBottom")?.cgColor]
         view.layer.insertSublayer(gradientLayer, at: 0)
+        loginWithFacebook.isEnabled = false
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -35,12 +36,15 @@ class LoginViewController: UIViewController {
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        setLoggingIn(false)
+        setIndicator(false)
     }
     
+    @IBAction func signUpAction(_ sender: Any) {
+        UIApplication.shared.open(udacityClient.EndPoints.getUdacitySignUpPage.url, options: [:], completionHandler: nil)
+    }
     
     @IBAction func loginAction(_ sender: Any) {
-        setLoggingIn(true)
+        setIndicator(true)
         udacityClient.login(username: self.EmailTextField.text ?? "", password: self.PasswordTextField.text ?? "", completion: handleLoginResponse(success:error:))
       
     }
@@ -60,19 +64,14 @@ class LoginViewController: UIViewController {
         }
     
     
-    func setLoggingIn(_ loggingIn: Bool) {
-        if loggingIn {
-            activityIndicator.isHidden = loggingIn
+    func setIndicator(_ isFinding: Bool) {
+        if isFinding {
             activityIndicator.startAnimating()
         } else {
-            activityIndicator.isHidden = loggingIn
             activityIndicator.stopAnimating()
         }
-        //EmailTextField.isEnabled = !loggingIn
-        //PasswordTextField.isEnabled = !loggingIn
-       // LoginButton.isEnabled = !loggingIn
-        loginWithFacebook.isEnabled = !loggingIn
     }
+    
     
     func showLoginFailure(message: String) {
         let alert = UIAlertController(title: "Authentication Error", message: "Email or Password invalid", preferredStyle: .alert)

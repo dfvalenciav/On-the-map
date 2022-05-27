@@ -17,135 +17,35 @@ class FinishAddLocationViewController : UIViewController {
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var likedinTextFieldOutlet: UITextField!
     
-    var studentInformation: StudentInformation?
- 
+    // MARK: - Properties
+    
+    private var presentingController: UIViewController?
+    var latitude: Float = 0.0
+    var longitude: Float = 0.0
+    var mapString: String = ""
+    var mediaURL: String = ""
+    
+    // MARK: - Lifecycle methods
+    
     override func viewDidLoad() {
-        super.viewDidLoad()
+        showMapAnnotation()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        presentingController = presentingViewController
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        self.mapView.alpha = 0.0
+        UIView.animate(withDuration: 1.0, delay: 0, options: [], animations: {
+            self.mapView.alpha = 1.0
+        })
+    }
         
-        if let studentLocation = studentInformation {
-            let studentLocation = Location (
-                createdAt: studentLocation.createdAt ?? "",
-                firstName: studentLocation.firstName,
-                lastName: studentLocation.lastName,
-                latitude: studentLocation.latitude!,
-                longitude: studentLocation.longitude!,
-                mapString: studentLocation.mapString!,
-                mediaURL: studentLocation.mediaURL!,
-                objectId: studentLocation.objectId ?? "",
-                uniqueKey: studentLocation.uniqueKey!,
-                updatedAt: studentLocation.updatedAt ?? ""
-            )
-            showLocations(location: studentLocation)
-        
-        }
+    // MARK: - MKMapViewDelegate
 
-    }
-    
-    
-    @IBAction func finishAddLocation(_ sender: UIButton) {
-        self.setLoading(true)
-        
-        if let studentLocation = studentInformation {
-            let studentLocation = Location (
-                createdAt: studentLocation.createdAt ?? "",
-                firstName: studentLocation.firstName,
-                lastName: studentLocation.lastName,
-                latitude: studentLocation.latitude!,
-                longitude: studentLocation.longitude!,
-                mapString: studentLocation.mapString!,
-                mediaURL: likedinTextFieldOutlet.text!,
-                objectId: studentLocation.objectId ?? "",
-                uniqueKey: studentLocation.uniqueKey!,
-                updatedAt: studentLocation.updatedAt ?? ""
-            )
-            showLocations(location: studentLocation)
-        
-        }
-        if let studentLocation = studentInformation {
-            if udacityClient.Auth.objectId == "" {
-                udacityClient.addStudentLocation(information: studentLocation) { (success, error) in
-                    if success {
-                        DispatchQueue.main.async {
-                            self.setLoading(true)
-                            self.dismiss(animated: true, completion: nil)
-                        }
-                    }else{
-                        DispatchQueue.main.async {
-                            self.showAlert(message: error?.localizedDescription ?? "", title: "Error")
-                            self.setLoading(false)
-                        }
-                    }
-                }
-                
-            }else{
-                let alertVC =  UIAlertController(title: "", message: "Location is already posted, would you like to update your location?", preferredStyle: .alert)
-                alertVC.addAction(UIAlertAction(title: "Overwrite", style: .default, handler: { (action: UIAlertAction) in
-                    udacityClient.updateStudentLocation(information: studentLocation) { (success, error) in
-                        if success {
-                            DispatchQueue.main.async {
-                                self.setLoading(true)
-                                self.dismiss(animated: true, completion: nil)
-                            }
-                        } else {
-                            DispatchQueue.main.async {
-                                self.showAlert(message: error?.localizedDescription ?? "", title: "Error")
-                                self.setLoading(false)
-                            }
-                        }
-            }
-                }))
-                alertVC.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler:  { (action: UIAlertAction) in
-                    DispatchQueue.main.async {
-                        self.setLoading(false)
-                        alertVC.dismiss(animated: true, completion: nil)
-                        
-                    }
-                    }))
-            }
-        }
-    }
-                
-                func showLocations(location: Location) {
-                    mapView.removeAnnotations(mapView.annotations)
-                    if let coordinate = extractCoordinates(location: location) {
-                        let annotation = MKPointAnnotation()
-                        annotation.title = location.locationLabel
-                        annotation.subtitle = location.mediaURL ?? ""
-                        annotation.coordinate = coordinate
-                        mapView.addAnnotation(annotation)
-                        mapView.showAnnotations(mapView.annotations, animated: true)
-                        
-                    }
-                }
-                
-                    func extractCoordinates(location: Location) -> CLLocationCoordinate2D? {
-                        if let lat = location.latitude, let lon = location.longitude {
-                            return CLLocationCoordinate2DMake(lat, lon)
-                        }
-                        return nil
-                    }
-                
-                func setLoading(_ loading: Bool) {
-                    if loading {
-                        DispatchQueue.main.async {
-                            self.activityIndicator.startAnimating()
-                            self.buttonEnabled(false, button: self.submitButtonOutlet)
-                        }
-                    }else{
-                        DispatchQueue.main.async {
-                            self.activityIndicator.stopAnimating()
-                            self.buttonEnabled(true, button: self.submitButtonOutlet)
-                        }
-                    }
-                    DispatchQueue.main.async {
-                        self.submitButtonOutlet.isEnabled = !loading
-                    }
-                }
-    
-    
-    
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-        
         let reuseId = "pin"
         
         var pinView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseId) as? MKPinAnnotationView
@@ -154,22 +54,54 @@ class FinishAddLocationViewController : UIViewController {
             pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
             pinView!.canShowCallout = true
             pinView!.pinTintColor = .red
-            pinView!.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
-        }
-        else {
+        } else {
             pinView!.annotation = annotation
         }
         
         return pinView
+    }
     
-}
+    // MARK: - Actions
     
-    func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
-        if control == view.rightCalloutAccessoryView {
-            let app = UIApplication.shared
-            if let toOpen = view.annotation?.subtitle! {
-                app.canOpenURL(URL(string: toOpen)!)
-            }
+    @IBAction func finishButtonAction(_ sender: Any) {
+        udacityClient.getPublicUserData(completion: handlePublicUserData(firstName:lastName:error:))
+    }
+    
+    // MARK: - Main methods
+    
+    func showMapAnnotation() {
+        let latitude = CLLocationDegrees(self.latitude)
+        let longitude = CLLocationDegrees(self.longitude)
+        let coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+        
+        let annotation = MKPointAnnotation()
+        annotation.coordinate = coordinate
+        annotation.title = self.mapString
+
+        mapView.addAnnotation(annotation)
+        mapView.selectAnnotation(annotation, animated: true)
+    }
+    
+    func handlePublicUserData(firstName: String?, lastName: String?, error: Error?) {
+        mediaURL = likedinTextFieldOutlet.text!
+        if error == nil {
+            udacityClient.postStudentLocation(firstName: firstName!, lastName: lastName!, mapString: self.mapString, mediaURL: self.mediaURL, latitude: self.latitude, longitude: self.longitude, completion: handlePostStudentResponse(success:error:))
+        } else {
+            showFailure(title: "Not Possible to Get User Information", message: error?.localizedDescription ?? "")
         }
+    }
+    
+    func handlePostStudentResponse(success: Bool, error: Error?) {
+        if success {
+            self.navigationController?.dismiss(animated: true, completion: nil)
+        } else {
+            showFailure(title: "Not Possible to Save Information", message: error?.localizedDescription ?? "")
+        }
+    }
+    
+    func showFailure(title: String, message: String) {
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        present(alertController, animated: true, completion: nil)
     }
 }

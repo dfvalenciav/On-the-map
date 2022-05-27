@@ -30,7 +30,8 @@ enum EndPoints {
     case addStudentLocation
     case gettingStudentLocations
     case updateStudentLocation
-    case getLoggedInUserProfile
+    case getPublicUserData
+    case getUdacitySignUpPage
     
     var stringValue : String {
         switch self {
@@ -40,7 +41,8 @@ enum EndPoints {
         case.addStudentLocation: return EndPoints.base + "/StudentLocation"
         case.gettingStudentLocations: return EndPoints.base + "/StudentLocation?order=-updatedAt&limit=100"
         case .updateStudentLocation: return EndPoints.base + "/StudentLocation/8ZExGR5uX8"
-        case.getLoggedInUserProfile: return EndPoints.base + "/users/" + Auth.key
+        case .getPublicUserData: return EndPoints.base + "/users/\(Auth.uniqueKey)"
+        case .getUdacitySignUpPage: return "https://auth.udacity.com/sign-up?next=https://classroom.udacity.com/authenticated"
         }
     }
         
@@ -78,62 +80,86 @@ enum EndPoints {
             }
         task.resume()
     }
+    
+    class func taskForGETRequest<ResponseType: Decodable>(url: URL, removeFirstCharacters: Bool, response: ResponseType.Type, completion: @escaping (ResponseType?, Error?) -> Void) -> URLSessionTask {
+        let task = URLSession.shared.dataTask(with: URLRequest(url: url)) { data, response, error in
+            guard let data = data else {
+                DispatchQueue.main.async {
+                    completion(nil, error)
+                }
+                return
+            }
+            var newData = data
+            if removeFirstCharacters {
+                let range = 5..<data.count
+                newData = newData.subdata(in: range) /* subset response data! */
+            }
+            let decoder = JSONDecoder()
+            do {
+                let responseObject = try decoder.decode(ResponseType.self, from: newData)
+                DispatchQueue.main.async {
+                    completion(responseObject, nil)
+                }
+            } catch {
+                DispatchQueue.main.async {
+                    completion(nil, error)
+                }
+            }
+        }
+        task.resume()
         
-        class func taskForPOSTRequest<RequestType: Encodable, ResponseType: Decodable>(url: URL, responseType: ResponseType.Type, body: RequestType,  completion: @escaping (ResponseType?, Error?) -> Void) {
-                var request = URLRequest(url: url)
-                request.httpMethod = "POST"
-                request.httpBody = try! JSONEncoder().encode(body)
-                request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-                let task = URLSession.shared.dataTask(with: request) { data, response, error in
-                    if error != nil {
+        return task
+    }
+    
+    class func taskForPostRequest<RequestType: Encodable, ResponseType: Decodable>(url: URL, removeFirstCharacters: Bool, responseType: ResponseType.Type, body: RequestType, completion: @escaping (ResponseType?, Error?) -> Void) {
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.addValue("application/json", forHTTPHeaderField: "Accept")
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpBody = try! JSONEncoder().encode(body)
+        let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+            guard let data = data else {
+                DispatchQueue.main.async {
+                    completion(nil, error)
+                }
+                return
+            }
+            var newData = data
+            if removeFirstCharacters {
+                let range = 5..<data.count
+                newData = newData.subdata(in: range) /* subset response data! */
+            }
+            let decoder = JSONDecoder()
+            do {
+                let responseObject = try decoder.decode(ResponseType.self, from: newData)
+                DispatchQueue.main.async {
+                    completion(responseObject, nil)
+                }
+            } catch {
+                do {
+                    let errorResponse = try decoder.decode(ErrorResponse.self, from: newData)
+                    DispatchQueue.main.async {
+                        completion(nil, errorResponse)
+                    }
+                } catch {
+                    DispatchQueue.main.async {
                         completion(nil, error)
-                        print(error)
-                        return
-                    }
-                    
-                    let range = 5..<data!.count
-                    let newData = data?.subdata(in: range)
-                    guard let data = data else {
-                        DispatchQueue.main.async {
-                            completion(nil, error)
-                        }
-                        return
-                    }
-                    let decoder = JSONDecoder()
-                    do {
-                        let responseObject = try decoder.decode(responseType.self, from: newData!)
-                        DispatchQueue.main.async {
-                            completion(responseObject, nil)
-                        }
-                    }catch{
-                        do {
-                            print(String(data: newData!, encoding: .utf8)!)
-                            
-                            let errorResponse = try decoder.decode(ErrorResponse.self, from: newData!)
-                            
-                            DispatchQueue.main.async {
-                                completion((errorResponse as! ResponseType), nil)
-                            }
-                        }catch {
-                            DispatchQueue.main.async {
-                                completion(nil, error)
-                                
-                                
-                            }
-                        }
                     }
                 }
-                task.resume()
             }
+        }
+        task.resume()
+    }
+        
 
     class func login (username : String, password: String, completion: @escaping (Bool, Error?) -> Void) {
         var udacity : Udacity
         udacity = Udacity(username: username, password: password)
         let body = LoginRequest(udacity:udacity)
-        taskForPOSTRequest(url: EndPoints.sessionId.url, responseType : SessionResponse.self, body: body){
+        taskForPostRequest(url: EndPoints.sessionId.url, removeFirstCharacters: true, responseType : SessionResponse.self, body: body){
             response, error in
             if let response = response {
-                Auth.sessionId = response.session.sessionId
+                Auth.uniqueKey = response.session.sessionId
                 completion (true, nil)
             } else {
                 completion (false, nil)
@@ -240,8 +266,8 @@ enum EndPoints {
     
     class func addStudentLocation(information: StudentInformation, completion: @escaping (Bool, Error?) -> Void) {
         var request = URLRequest(url: EndPoints.addStudentLocation.url)
-        let jsonbody = "{\"uniqueKey\": \"\(information.uniqueKey)\", \"firstName\": \"\(information.firstName)\", \"lastName\": \"\(information.lastName)\",\"mapString\": \"\(information.mapString)\", \"mediaURL\": \"\(information.mediaURL)\",\"latitude\": \(information.latitude), \"longitude\": \(information.longitude)}"
-        //print("\(information.latitude), \"longitude\":\(information.longitude)" )
+        let jsonbody = "{\"uniqueKey\": \"\(information.uniqueKey!)\", \"firstName\": \"\(information.firstName)\", \"lastName\": \"\(information.lastName)\",\"mapString\": \"\(information.mapString!)\", \"mediaURL\": \"\(information.mediaURL!)\",\"latitude\": \(information.latitude!), \"longitude\": \(information.longitude!)}"
+        print(jsonbody)
         
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -258,21 +284,25 @@ enum EndPoints {
         task.resume()
 }
     
-    class func updateStudentLocation(information: StudentInformation, completion: @escaping (Bool, Error?) -> Void) {
-        var request = URLRequest(url: EndPoints.updateStudentLocation.url)
-        let jsonbody = "{\"uniqueKey\": \"\(information.uniqueKey)\", \"firstName\": \"\(information.firstName)\", \"lastName\": \"\(information.lastName)\",\"mapString\": \"\(information.mapString)\", \"mediaURL\": \"\(information.mediaURL)\",\"latitude\": \(information.latitude), \"longitude\": \(information.longitude)}"
-        
-        request.httpMethod = "PUT"
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.httpBody = jsonbody.data(using: .utf8)
-        let session = URLSession.shared
-        let task = session.dataTask(with: request) { data, response, error in
-            if error != nil {
-                completion (false, error)
-                return
-            }
-            print (String(data: data!, encoding: .utf8)!)
+    
+    class func postStudentLocation(firstName: String, lastName: String, mapString: String, mediaURL: String, latitude: Float, longitude: Float, completion: @escaping (Bool, Error?) -> Void) {
+        taskForPostRequest(url: EndPoints.addStudentLocation.url, removeFirstCharacters: false, responseType: PostLocationResponse.self, body: PostLocationRequest(uniqueKey: Auth.uniqueKey, firstName: firstName, lastName: lastName, mapString: mapString, mediaURL: mediaURL, latitude: latitude, longitude: longitude)) { (_, error) in
+            completion(error == nil, error)
+        }
     }
-        task.resume()
+    
+    
+    class func getPublicUserData(completion: @escaping (String?, String?, Error?) -> Void) {
+        taskForGETRequest(url: EndPoints.getPublicUserData.url, removeFirstCharacters: true, response: StudentResponse.self) { (response, error) in
+            if let response = response {
+                completion(response.firstName, response.lastName, nil)
+                print(response.firstName)
+            } else {
+                completion(nil, nil, error)
+            }
+        }
+    }
 }
-}
+
+     
+

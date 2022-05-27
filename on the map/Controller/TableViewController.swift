@@ -100,7 +100,9 @@ extension TableViewController : UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexpath: IndexPath) {
         let student = people[indexpath.row]
-        openLink(student.mediaURL ?? "")
+        let studentURL = URL(string: student.mediaURL!) ?? URL(string: "https://udacity.com")
+        print(student.mediaURL ?? "https://udacity.com")
+        UIApplication.shared.open(studentURL!, options: [:], completionHandler: nil)
     }
         
         func showActivityIndicator() {

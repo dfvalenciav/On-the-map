@@ -19,19 +19,31 @@ class MapViewController: UIViewController {
     
     var locations = [StudentInformation]()
     
-    override func viewWillAppear(_ animated: Bool) {
-       super.viewWillAppear(animated)
-        }
+    let appDelegate = UIApplication.shared.delegate as! AppDelegate
+    
+    
+    override func viewDidAppear(_ animated: Bool) {
+        updateRequest()
+    }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidAppear(true)
+        updateRequest()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         updateRequest()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        updateRequest()
+    }
 
+    @IBAction func refreshButtonAction(_ sender: Any) {
+        updateRequest()
+    }
+    
     func updateRequest() {
         if !mapView.annotations.isEmpty {
             mapView.removeAnnotations(mapView.annotations)
@@ -40,6 +52,7 @@ class MapViewController: UIViewController {
                 print (results)
             self.locations = results as [StudentInformation]
             self.setup()
+            self.showMapAnnotations(self.locations)
             }
     }
     
@@ -57,8 +70,31 @@ class MapViewController: UIViewController {
     
     @IBAction func addLocation(_ sender: Any) {
     performSegue(withIdentifier: "addLocation", sender: sender)
-          }
+    }
     
+    func showMapAnnotations(_ locations: [StudentInformation]) {
+        var annotations = [MKPointAnnotation]()
+               
+        for location in locations {
+            let latitude = CLLocationDegrees(location.latitude!)
+            let longitude = CLLocationDegrees(location.longitude!)
+            let coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+            
+            let firstName = location.firstName
+            let lastName = location.lastName
+            let mediaURL = location.mediaURL
+            
+            let annotation = MKPointAnnotation()
+            annotation.coordinate = coordinate
+            annotation.title = "\(firstName) \(lastName)"
+            annotation.subtitle = mediaURL
+            
+            annotations.append(annotation)
+        }
+        
+        self.mapView.addAnnotations(annotations)
+    }
+
     
     func setup () {
        var annotations = [MKPointAnnotation]()
@@ -78,7 +114,7 @@ class MapViewController: UIViewController {
                     annotation.subtitle = mediaURL
                     annotations.append(annotation)
                 }
-                mapView.addAnnotations(annotations)
+        self.mapView.addAnnotations(annotations)
             }
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
@@ -97,13 +133,18 @@ class MapViewController: UIViewController {
         return pinView
         }
     
-    func mapView(_ _mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
+
+    
+    
+    func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
         if control == view.rightCalloutAccessoryView {
-            if let open = view.annotation?.subtitle {
-                openLink(open ?? "")
+            if let toOpen = view.annotation?.subtitle! {
+                UIApplication.shared.open(URL(string: toOpen)!, options: [:], completionHandler: nil)
             }
         }
     }
+    
+    
     
     
 }
