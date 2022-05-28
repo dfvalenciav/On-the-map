@@ -8,7 +8,7 @@
 import UIKit
 import MapKit
 
-class MapViewController: UIViewController {
+class MapViewController: UIViewController, MKMapViewDelegate {
 
 
 
@@ -17,7 +17,7 @@ class MapViewController: UIViewController {
     @IBOutlet weak var dropPinButton: UIBarButtonItem!
     @IBOutlet weak var refreshButton: UIBarButtonItem!
     
-    var locations = [StudentInformation]()
+
     
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     
@@ -33,6 +33,7 @@ class MapViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        mapView.delegate = self
         updateRequest()
     }
     
@@ -49,15 +50,16 @@ class MapViewController: UIViewController {
             mapView.removeAnnotations(mapView.annotations)
         }
         udacityClient.getStudentPins { (results, error) in
-                print (results)
-            self.locations = results as [StudentInformation]
-            self.setup()
-            self.showMapAnnotations(self.locations)
+            if error == nil {
+                StudentsData.sharedInstance().students = results as [StudentInformation]
+                self.setup()
+                self.showMapAnnotations(StudentsData.sharedInstance().students)
+            } else {
+                self.showFailure(message : error?.localizedDescription ?? "")
+            }
+           
             }
     }
-    
-    
-    
     
 
     @IBAction func logoutButtonAction(_ sender: Any) {
@@ -101,7 +103,7 @@ class MapViewController: UIViewController {
         mapView.removeAnnotations(annotations)
         annotations.removeAll()
         
-            for data in locations {
+            for data in StudentsData.sharedInstance().students {
                     let lat = CLLocationDegrees(data.latitude ?? 0.0)
                     let long = CLLocationDegrees(data.longitude ?? 0.0)
                     let coordinate = CLLocationCoordinate2D(latitude: lat, longitude: long)
@@ -123,7 +125,7 @@ class MapViewController: UIViewController {
         if pinView == nil {
             pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
             pinView!.canShowCallout = true
-            pinView!.pinTintColor = .blue
+            pinView!.pinTintColor = .red
             pinView?.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
             
         }
@@ -138,10 +140,20 @@ class MapViewController: UIViewController {
     
     func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
         if control == view.rightCalloutAccessoryView {
-            if let toOpen = view.annotation?.subtitle! {
-                UIApplication.shared.open(URL(string: toOpen)!, options: [:], completionHandler: nil)
+            if  !verifyUrl(urlString: view.annotation?.subtitle!) {
+                self.showFailure(message: "Invalid URL!")
             }
         }
+    }
+    
+    func verifyUrl (urlString: String?) -> Bool {
+        if let urlString = urlString {
+            if let url = NSURL(string: urlString)  {
+                UIApplication.shared.open(url as URL, options: [:], completionHandler: nil)
+            }
+        }
+        
+        return false
     }
     
     

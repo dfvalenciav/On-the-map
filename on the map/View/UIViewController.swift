@@ -36,4 +36,12 @@ extension UIViewController {
                 return
         }
 }
+    
+    func showFailure(message: String) {
+        let alert = UIAlertController(title: "ALERT", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .default, handler: { _ in
+        NSLog("The \"OK\" alert occured.")
+        }))
+        self.present(alert, animated: true, completion: nil)
+    }
 }

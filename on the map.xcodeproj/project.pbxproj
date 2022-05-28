@@ -26,6 +26,7 @@
 		14CCF3B428368F22002C7E1E /* location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14CCF3B328368F22002C7E1E /* location.swift */; };
 		14F4772E283324B400892117 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14F4772C283324B400892117 /* MapViewController.swift */; };
 		14F477312833415300892117 /* ErrorResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14F477302833415300892117 /* ErrorResponse.swift */; };
+		14F50A7228418E16000D5D8E /* StudentsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14F50A7128418E16000D5D8E /* StudentsData.swift */; };
 		14F5DAB9282DA9A200514B0A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14F5DAB8282DA9A200514B0A /* AppDelegate.swift */; };
 		14F5DABB282DA9A200514B0A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14F5DABA282DA9A200514B0A /* SceneDelegate.swift */; };
 		14F5DABD282DA9A200514B0A /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14F5DABC282DA9A200514B0A /* LoginViewController.swift */; };
@@ -58,6 +59,7 @@
 		14CCF3B328368F22002C7E1E /* location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = location.swift; sourceTree = "<group>"; };
 		14F4772C283324B400892117 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MapViewController.swift; path = "on the map/Controller/MapViewController.swift"; sourceTree = SOURCE_ROOT; };
 		14F477302833415300892117 /* ErrorResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorResponse.swift; sourceTree = "<group>"; };
+		14F50A7128418E16000D5D8E /* StudentsData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentsData.swift; sourceTree = "<group>"; };
 		14F5DAB5282DA9A200514B0A /* on the map.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "on the map.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		14F5DAB8282DA9A200514B0A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		14F5DABA282DA9A200514B0A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -196,6 +198,7 @@
 		14F5DADB282DE5BD00514B0A /* Map Data */ = {
 			isa = PBXGroup;
 			children = (
+				14F50A7128418E16000D5D8E /* StudentsData.swift */,
 			);
 			path = "Map Data";
 			sourceTree = "<group>";
@@ -279,6 +282,7 @@
 				148334C428348A0D0029B981 /* TableViewController.swift in Sources */,
 				1463650528372ACF003F81AF /* PostLocationResponse.swift in Sources */,
 				1463650728372BFB003F81AF /* StudentModel.swift in Sources */,
+				14F50A7228418E16000D5D8E /* StudentsData.swift in Sources */,
 				148334C628348A6C0029B981 /* AddLocationViewController.swift in Sources */,
 				14F5DABD282DA9A200514B0A /* LoginViewController.swift in Sources */,
 				14F477312833415300892117 /* ErrorResponse.swift in Sources */,

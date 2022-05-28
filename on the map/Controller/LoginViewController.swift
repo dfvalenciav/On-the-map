@@ -58,7 +58,7 @@ class LoginViewController: UIViewController {
             }
             else {
                 DispatchQueue.main.async {
-                    self.showLoginFailure(message : error?.localizedDescription ?? "")
+                    self.showFailure(message: error?.localizedDescription ?? "" )
                 }
             }
         }
@@ -70,15 +70,6 @@ class LoginViewController: UIViewController {
         } else {
             activityIndicator.stopAnimating()
         }
-    }
-    
-    
-    func showLoginFailure(message: String) {
-        let alert = UIAlertController(title: "Authentication Error", message: "Email or Password invalid", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .default, handler: { _ in
-        NSLog("The \"OK\" alert occured.")
-        }))
-        self.present(alert, animated: true, completion: nil)
     }
 
 

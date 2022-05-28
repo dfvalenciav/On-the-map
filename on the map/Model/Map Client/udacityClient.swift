@@ -39,6 +39,8 @@ enum EndPoints {
         case.login: return EndPoints.base
         case.logout: return EndPoints.base + "/session"
         case.addStudentLocation: return EndPoints.base + "/StudentLocation"
+            //Testing url fail
+      //  case.gettingStudentLocations: return EndPoints.base + "/StudentLocatINVALIDion?order=-updatedAt&limit=100"
         case.gettingStudentLocations: return EndPoints.base + "/StudentLocation?order=-updatedAt&limit=100"
         case .updateStudentLocation: return EndPoints.base + "/StudentLocation/8ZExGR5uX8"
         case .getPublicUserData: return EndPoints.base + "/users/\(Auth.uniqueKey)"
@@ -186,7 +188,7 @@ enum EndPoints {
     }
         let range = 5..<data!.count
             let newData = data?.subdata(in: range)
-            print (String(data: newData!, encoding: .utf8)!)
+            debugPrint (String(data: newData!, encoding: .utf8)!)
             Auth.sessionId = ""
             completion(false, error)
         }
@@ -211,7 +213,7 @@ enum EndPoints {
             let decoder = JSONDecoder()
             
             do {
-                print (String(data: data, encoding: .utf8) ?? "")
+                debugPrint (String(data: data, encoding: .utf8) ?? "")
             
             let requestObject = try
                 decoder.decode(StudentLocations.self, from: data)
@@ -222,7 +224,7 @@ enum EndPoints {
             
             DispatchQueue.main.async {
                 completion([], error)
-                print (error.localizedDescription)
+                debugPrint (error.localizedDescription)
             }
         }
     }
@@ -246,7 +248,7 @@ enum EndPoints {
             let decoder = JSONDecoder()
             
             do {
-                print (String(data: data, encoding: .utf8) ?? "")
+                debugPrint (String(data: data, encoding: .utf8) ?? "")
             let requestObject = try
                 decoder.decode(StudentLocations.self, from: data)
             DispatchQueue.main.async {
@@ -257,7 +259,7 @@ enum EndPoints {
             
             DispatchQueue.main.async {
                 completion([], error)
-                print (error.localizedDescription)
+                debugPrint (error.localizedDescription)
             }
         }
     }
@@ -267,7 +269,7 @@ enum EndPoints {
     class func addStudentLocation(information: StudentInformation, completion: @escaping (Bool, Error?) -> Void) {
         var request = URLRequest(url: EndPoints.addStudentLocation.url)
         let jsonbody = "{\"uniqueKey\": \"\(information.uniqueKey!)\", \"firstName\": \"\(information.firstName)\", \"lastName\": \"\(information.lastName)\",\"mapString\": \"\(information.mapString!)\", \"mediaURL\": \"\(information.mediaURL!)\",\"latitude\": \(information.latitude!), \"longitude\": \(information.longitude!)}"
-        print(jsonbody)
+        debugPrint(jsonbody)
         
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -278,7 +280,7 @@ enum EndPoints {
                 completion (false, error)
                 return
             }
-            print (String(data: data!, encoding: .utf8)!)
+            debugPrint (String(data: data!, encoding: .utf8)!)
             completion(true, nil)
         }
         task.resume()
@@ -296,7 +298,7 @@ enum EndPoints {
         taskForGETRequest(url: EndPoints.getPublicUserData.url, removeFirstCharacters: true, response: StudentResponse.self) { (response, error) in
             if let response = response {
                 completion(response.firstName, response.lastName, nil)
-                print(response.firstName)
+                debugPrint(response.firstName)
             } else {
                 completion(nil, nil, error)
             }

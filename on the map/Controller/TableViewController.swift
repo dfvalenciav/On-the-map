@@ -15,7 +15,6 @@ class TableViewController : UIViewController {
     @IBOutlet weak var refreshButton: UIBarButtonItem!
     @IBOutlet weak var studentsTableView: UITableView!
     
-    var people = [StudentInformation]()
     var indicator: UIActivityIndicatorView!
     
     
@@ -33,10 +32,10 @@ class TableViewController : UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        StudentModel.student = people
+        StudentModel.student = StudentsData.sharedInstance().students
         udacityClient.getStudentLists { (results, error) in
             StudentModel.student = results
-            self.people = results
+            StudentsData.sharedInstance().students = results
             self.studentsTableView.reloadData()
 
             }
@@ -72,7 +71,7 @@ class TableViewController : UIViewController {
     func updateRequest() {
         udacityClient.getStudentLists { (results, error) in
                 print (results)
-            self.people = results as [StudentInformation]
+            StudentsData.sharedInstance().students = results as [StudentInformation]
             self.studentsTableView.reloadData()
         }
         
@@ -91,7 +90,7 @@ extension TableViewController : UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "StudentTableViewCell", for: indexPath)
-        let student = people[indexPath.row]
+        let student = StudentsData.sharedInstance().students[indexPath.row]
         cell.textLabel?.text = "\(student.firstName)" + " " + "\(student.lastName)"
         cell.imageView?.image = UIImage(named: "icon_pin")
         return cell
@@ -99,19 +98,31 @@ extension TableViewController : UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexpath: IndexPath) {
-        let student = people[indexpath.row]
-        let studentURL = URL(string: student.mediaURL!) ?? URL(string: "https://udacity.com")
-        print(student.mediaURL ?? "https://udacity.com")
-        UIApplication.shared.open(studentURL!, options: [:], completionHandler: nil)
+        let student = StudentsData.sharedInstance().students[indexpath.row]
+        if  !verifyUrl(urlString: student.mediaURL) {
+            self.showFailure(message: "Invalid URL!")
+        }
+    }
+    func showActivityIndicator() {
+        indicator.isHidden = false
+        indicator.startAnimating()
+    }
+    
+    func hideActivityIndicator() {
+        indicator.isHidden = true
+        indicator.stopAnimating()
+    }
+    }
+    
+    func verifyUrl (urlString: String?) -> Bool {
+        if let urlString = urlString {
+            if let url = NSURL(string: urlString)  {
+                UIApplication.shared.open(url as URL, options: [:], completionHandler: nil)
+            }
+        }
+        
+        return false
     }
         
-        func showActivityIndicator() {
-            indicator.isHidden = false
-            indicator.startAnimating()
-        }
-        
-        func hideActivityIndicator() {
-            indicator.isHidden = true
-            indicator.stopAnimating()
-        }
-}
+
+

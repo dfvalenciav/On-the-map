@@ -38,8 +38,11 @@ class FinishAddLocationViewController : UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         self.mapView.alpha = 0.0
-        UIView.animate(withDuration: 1.0, delay: 0, options: [], animations: {
+        UIView.animate(withDuration: 2.0, delay: 0, options: [], animations: {
             self.mapView.alpha = 1.0
+            self.mapView.setCenter(self.showMapAnnotation(), animated: true)
+            
+           
         })
     }
         
@@ -69,7 +72,7 @@ class FinishAddLocationViewController : UIViewController {
     
     // MARK: - Main methods
     
-    func showMapAnnotation() {
+    func showMapAnnotation() -> CLLocationCoordinate2D{
         let latitude = CLLocationDegrees(self.latitude)
         let longitude = CLLocationDegrees(self.longitude)
         let coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
@@ -80,6 +83,8 @@ class FinishAddLocationViewController : UIViewController {
 
         mapView.addAnnotation(annotation)
         mapView.selectAnnotation(annotation, animated: true)
+        return coordinate
+        
     }
     
     func handlePublicUserData(firstName: String?, lastName: String?, error: Error?) {
