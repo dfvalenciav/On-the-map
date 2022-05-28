@@ -99,8 +99,11 @@ extension TableViewController : UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexpath: IndexPath) {
         let student = StudentsData.sharedInstance().students[indexpath.row]
+        let url = URL(string: student.mediaURL!)
         if  !verifyUrl(urlString: student.mediaURL) {
             self.showFailure(message: "Invalid URL!")
+        } else {
+            UIApplication.shared.open(url! as URL, options: [:], completionHandler: nil)
         }
     }
     func showActivityIndicator() {
@@ -114,15 +117,14 @@ extension TableViewController : UITableViewDataSource, UITableViewDelegate {
     }
     }
     
-    func verifyUrl (urlString: String?) -> Bool {
-        if let urlString = urlString {
-            if let url = NSURL(string: urlString)  {
-                UIApplication.shared.open(url as URL, options: [:], completionHandler: nil)
-            }
-        }
-        
+func verifyUrl(urlString: String?) -> Bool {
+    guard let urlString = urlString,
+          let url = URL(string: urlString) else {
         return false
     }
+
+    return UIApplication.shared.canOpenURL(url)
+}
         
 
 

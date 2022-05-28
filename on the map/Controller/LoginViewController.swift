@@ -45,6 +45,7 @@ class LoginViewController: UIViewController {
     
     @IBAction func loginAction(_ sender: Any) {
         setIndicator(true)
+        activityIndicator.startAnimating()
         udacityClient.login(username: self.EmailTextField.text ?? "", password: self.PasswordTextField.text ?? "", completion: handleLoginResponse(success:error:))
       
     }
@@ -55,6 +56,7 @@ class LoginViewController: UIViewController {
             if success {
                 //performSegue(withIdentifier: "loginNavigation", sender: nil)
                 performSegue(withIdentifier: "loginNavigation", sender: nil)
+                activityIndicator.stopAnimating()
             }
             else {
                 DispatchQueue.main.async {

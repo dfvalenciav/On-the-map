@@ -140,20 +140,22 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     
     func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
         if control == view.rightCalloutAccessoryView {
+            let url = URL(string: (view.annotation?.subtitle!)!)
             if  !verifyUrl(urlString: view.annotation?.subtitle!) {
                 self.showFailure(message: "Invalid URL!")
+            } else {
+                UIApplication.shared.open(url! as URL, options: [:], completionHandler: nil)
             }
         }
     }
     
-    func verifyUrl (urlString: String?) -> Bool {
-        if let urlString = urlString {
-            if let url = NSURL(string: urlString)  {
-                UIApplication.shared.open(url as URL, options: [:], completionHandler: nil)
-            }
+    func verifyUrl(urlString: String?) -> Bool {
+        guard let urlString = urlString,
+              let url = URL(string: urlString) else {
+            return false
         }
-        
-        return false
+
+        return UIApplication.shared.canOpenURL(url)
     }
     
     

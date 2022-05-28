@@ -163,8 +163,10 @@ enum EndPoints {
             if let response = response {
                 Auth.uniqueKey = response.session.sessionId
                 completion (true, nil)
-            } else {
-                completion (false, nil)
+            }else { if let error = error {
+                completion(false, error)
+            }
+                
             }
         }
     }
